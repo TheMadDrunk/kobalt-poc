@@ -1,0 +1,31 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter, box-shadow; /* Include box-shadow for smooth transition */
+    transition: filter 300ms, box-shadow 300ms; /* Include box-shadow transition */
+}
+/* General Logo Hover (for Vite logo) */
+.logo:hover {
+    filter: none; /* Turn off the filter property */
+    box-shadow: 0 0 2em #646cffaa; /* Use box-shadow for the glow */
+}
+/* Solid Logo Hover */
+.logo.solid:hover {
+    filter: none; /* Turn off the filter property */
+    box-shadow: 0 0 2em #61dafbaa; /* Use box-shadow for the glow */
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

@@ -1,0 +1,60 @@
+import {createEffect, createSignal} from 'solid-js'
+import solidLogo from './assets/solid.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
+
+interface KotlinBridge {
+  sendMessage(jsonString: string): string;
+  receiveMessage: (jsonString: string) => void;
+}
+
+declare const AppBridge: KotlinBridge;
+
+
+
+function App() {
+  const [count, setCount] = createSignal(0)
+  const [pings, setPings] = createSignal(0)
+  function receiveMessage(jsonString: string): void {
+    console.log("JS RECEIVED MESSAGE:", jsonString);
+    setPings((p)=>p+1);
+  }
+
+  (window as any).receiveMessage = receiveMessage;
+  createEffect(()=>{
+    console.log("plus one,",count())
+    // @ts-ignore
+    const bridge = window.app as KotlinBridge;
+    bridge.sendMessage(count().toString())
+  });
+
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} class="logo" alt="Vite logo" />
+        </a>
+        <a href="https://solidjs.com" target="_blank">
+          <img src={solidLogo} class="logo solid" alt="Solid logo" />
+        </a>
+      </div>
+      <h1>Vite + Solid</h1>
+      <div class="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count()}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+        <p>
+          number of pings : {pings()}
+        </p>
+      </div>
+      <p class="read-the-docs">
+        Click on the Vite and Solid logos to learn more
+      </p>
+    </>
+  )
+}
+
+export default App
