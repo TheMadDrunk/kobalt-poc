@@ -1,31 +1,16 @@
-import {createEffect, createSignal} from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import solidLogo from './assets/solid.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
-interface KotlinBridge {
-  sendMessage(jsonString: string): string;
-  receiveMessage: (jsonString: string) => void;
-}
-
-declare const AppBridge: KotlinBridge;
-
-
+import { useBridge } from './bridge'
 
 function App() {
   const [count, setCount] = createSignal(0)
-  const [pings, setPings] = createSignal(0)
-  function receiveMessage(jsonString: string): void {
-    console.log("JS RECEIVED MESSAGE:", jsonString);
-    setPings((p)=>p+1);
-  }
+  const { sendMessage, pings } = useBridge()
 
-  (window as any).receiveMessage = receiveMessage;
-  createEffect(()=>{
-    console.log("plus one,",count())
-    // @ts-ignore
-    const bridge = window.app as KotlinBridge;
-    bridge.sendMessage(count().toString())
+  createEffect(() => {
+    console.log("plus one,", count())
+    sendMessage(count().toString())
   });
 
   return (
